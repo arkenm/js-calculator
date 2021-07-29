@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEMDAS CALCULATOR</title>
+    <style>
+        html {
+            font-size: 62.5%;
+            box-sizing: border-box;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: inherit;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .calculator {
+            border: 1px solid #ccc;
+            width: 400px;
+        }
+
+        .screen {
+            width: 100%;
+            font-size: 5rem;
+            height: 75px;
+            border: none;
+            background-color: #252525;
+            color: #fff;
+            text-align: right;
+            padding-right: 20px;
+            padding-left: 10px;
+            border-radius: 0px;
+        }
+
+        button {
+            height: 60px;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #c4c4c4;
+            background-color: transparent;
+            font-size: 2rem;
+            color: #333;
+            box-shadow: 0 9px #999;
+        }
+
+        button:hover {
+            background-color: #eaeaea;
+        }
+
+        button:active {
+            background-color: #36aadd;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        .operator {
+            color: #337cac;
+        }
+
+        .all-clear {
+            background-color: #f0595f;
+            border-color: #b0353a;
+            color: #fff;
+            grid-area: 6 / 1 / 6 / 5;
+            width: 100%;
+        }
+
+        .all-clear:hover {
+            background-color: #f17377;
+        }
+
+        .del {
+            background-color: #fff;
+            border-color: #b0353a;
+            color: #f0595f;
+        }
+
+        .del:hover {
+            background-color: #eaeaea;
+        }
+
+        .equals {
+            background-color: #2e86c0;
+            border-color: #337cac;
+            color: #fff;
+            grid-area: 2/4/6/5;
+            height: 100%;
+        }
+
+        .equals:hover {
+            background-color: #4e9ed4;
+        }
+
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body onload="allclear()">
+    <div class="container">
+        <div class="calculator">
+
+            <input type="text" id="calculator-screen" class="screen" value="" onkeypress="handle(event)" />
+            <input type="text" id="calculator-ans" class="screen" value="" disabled/>
+
+            <div class="calculator-keys">
+
+                <button onclick="display('+')" value="+">+</button>
+                <button onclick="display('-')" value="-">-</button>
+                <button onclick="display('*')" value="*">&times;</button>
+                <button onclick="display('/')" value="/">&divide;</button>
+
+                <button onclick="display('7')" id="7" value="7">7</button>
+                <button onclick="display('8')" class="number" value="8">8</button>
+                <button onclick="display('9')" class="number" value="9">9</button>
+
+
+                <button onclick="display('4')" class="number" value="4">4</button>
+                <button onclick="display('5')" class="number" value="5">5</button>
+                <button onclick="display('6')" class="number" value="6">6</button>
+
+
+                <button onclick="display('1')" class="number" value="1">1</button>
+                <button onclick="display('2')" class="number" value="2">2</button>
+                <button onclick="display('3')" class="number" value="3">3</button>
+
+
+                <button onclick="display('0')" class="number" value="0">0</button>
+                <button onclick="display('.')" class="decimal" value=".">.</button>
+                <button onclick="del()" class="del" value="del">DEL</button>
+
+                <button onclick="allclear()" class="all-clear" value="all-clear">AC</button>
+
+                <button onclick="answer()" class="equals" value="=">=</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/2.6.0/math.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+    <script>
+        'use strict';
+        var calculatorScreen = document.getElementById("calculator-screen");
+        var calculatorAns = document.getElementById("calculator-ans");
+        var reset = false;
+
+        function clear() {
+            if (reset) {
+                calculatorScreen.value = "";
+                reset = false;
+            }
+        }
+
+        function start() {
+            clear();
+            calculatorScreen.value = "0";
+        }
+
+        function display(val) {
+            clear();
+            calculatorScreen.value += val;
+        }
+
+        function allclear() {
+            start();
+            reset = true;
+        }
+
+        function del() {
+            calculatorScreen.value = calculatorScreen.value.slice(0, -1);
+        }
+
+        function answer() {
+            var ans = math.eval(calculatorScreen.value);
+            calculatorAns.value = ans;
+            reset = true;
+        }
+
+        window.onerror = function () {
+            var message = "ERROR";
+            clear();
+            calculatorAns.value = message;
+            return true;
+        };
+
+        function handle(e) {
+            if (e.keyCode === 13) {
+                answer();
+            }
+        }
+    </script>
+</body>
+
+</html>
